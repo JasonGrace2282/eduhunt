@@ -9,6 +9,7 @@ class ChooseHunt(forms.Form):
         queryset=Hunt.objects.filter(end_time__gt=timezone.now()),
     )
 
+
 class ChooseTeam(forms.Form):
     def __init__(self, *args, hunt: Hunt, user, **kwargs):
         super().__init__(*args, **kwargs)
@@ -28,7 +29,9 @@ class CheckAnswer(forms.Form):
 
     def __init__(self, *args, hunt: Hunt, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["question"] = forms.ModelChoiceField(queryset=hunt.problem_set.all(), widget=forms.HiddenInput())
+        self.fields["question"] = forms.ModelChoiceField(
+            queryset=hunt.problem_set.all(), widget=forms.HiddenInput()
+        )
 
     def compute_points(self, team) -> int:
         question: Problem = self.cleaned_data["question"]

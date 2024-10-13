@@ -1,13 +1,13 @@
-from django.contrib.auth.decorators import login_required
-from django.db.models import F
-from django.http import Http404, JsonResponse
-from django.shortcuts import get_object_or_404, render, redirect
-from django.utils import timezone
-
 from datetime import timedelta
 
+from django.contrib.auth.decorators import login_required
+from django.db.models import F
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+
+from .forms import CheckAnswer, ChooseHunt, ChooseTeam
 from .models import Hunt
-from .forms import ChooseHunt, CheckAnswer, ChooseTeam
 
 
 @login_required
@@ -63,5 +63,11 @@ def hunt_view(request, hunt_id: int):
     return render(
         request,
         "dashboard/hunt.html",
-        {"hunt": hunt, "problems": problems, "teams": teams, "user_team": team, "team_solved": hunt.problem_set.filter(solved_by=team)},
+        {
+            "hunt": hunt,
+            "problems": problems,
+            "teams": teams,
+            "user_team": team,
+            "team_solved": hunt.problem_set.filter(solved_by=team),
+        },
     )

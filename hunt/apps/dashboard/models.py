@@ -28,7 +28,6 @@ class Problem(models.Model):
         return self.solved_by.filter(pk=team.pk).exists()
 
 
-
 class Team(models.Model):
     name = models.CharField(max_length=100)
     points = models.PositiveIntegerField(default=0)
@@ -36,7 +35,6 @@ class Team(models.Model):
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
     hunt = models.ForeignKey("Hunt", on_delete=models.CASCADE)
-
 
     def __str__(self) -> str:
         return self.name

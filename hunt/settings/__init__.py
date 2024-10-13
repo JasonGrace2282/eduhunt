@@ -66,8 +66,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -108,7 +108,6 @@ AUTHENTICATION_BACKENDS = ("hunt.apps.auth.oauth.IonOauth2",)
 
 if DEBUG:
     AUTHENTICATION_BACKENDS += ("django.contrib.auth.backends.ModelBackend",)
-
 
 
 SOCIAL_AUTH_USER_FIELDS = [
@@ -175,4 +174,4 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 with contextlib.suppress(ImportError):
-    from .secret import *
+    from .secret import *  # noqa: F403
