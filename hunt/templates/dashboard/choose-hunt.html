@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <script>
+    $(document).ready(function() {
+      $("#id_hunt").selectize();
+    });
+  </script>
+{% endblock %}
+
+{% block main %}
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_table }}
+    <input class="tin-btn" type="submit" value="Go">
+  </form>
+{% endblock %}

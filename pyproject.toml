@@ -1,0 +1,96 @@
+[project]
+name = "hunt"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.1.2",
+    "social-auth-app-django>=5.4.2",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "django-stubs>=5.1.0",
+    "pre-commit>=4.0.1",
+]
+
+[tool.ruff]
+extend-exclude = [
+  ".github",
+  "dev",
+  ".env",
+  "env",
+  "secret",
+  "media",
+  "migrations",
+]
+
+show-fixes = false
+fix = true
+
+line-length = 100
+
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    # flake8-bugbear
+    "B",
+    # flake8-blind-except
+    "BLE",
+    # flake8-comprehensions
+    "C4",
+    # mccabe code complexity
+    "C90",
+    # pydocstyle
+    "D",
+    # flake8-django
+    "DJ",
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # flake8-boolean-trap
+    "FBT",
+    # isort
+    "I",
+    # pep8-naming
+    "N",
+    # Pylint
+    "PL",
+    # flake8-use-pathlib
+    "PTH",
+    # pygrep hooks
+    "PGH",
+    # flake8-return
+    "RET",
+    # ruff
+    "RUF",
+    # pyupgrade
+    "UP",
+]
+ignore = [
+  # magic number comparison
+  "PLR2004",
+  # pytest fixture not returning anything should have underscore
+  "PT004",
+  # mutable class attrs annotated as typing.ClassVar
+  "RUF012",
+  # missing docstring
+  "D1",
+  # as recommended by https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  "E111",
+  "E114",
+  "E117",
+  "E501",
+  "D206",
+  "D300",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"

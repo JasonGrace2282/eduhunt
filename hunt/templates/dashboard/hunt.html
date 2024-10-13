@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <style>
+    .completed {
+        background: darkgreen
+    }
+  </style>
+  <script>
+      function checkFlag(challenge_id) {
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'dashboard:hunt' hunt.id %}",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                dataType: 'json',
+                question: challenge_id,
+                answer: $("#" + challenge_id).val(),
+            },
+            success: function (data) {
+                if (data.result == "success") {
+                  $(`#${challenge_id}`).prop("disabled", true).css("background-color", "green");
+                  $(`#${challenge_id}-submit`).prop("disabled", true);
+                } else if (data.result === "ratelimited") {
+                    const alert = $("<div class='alert alert-danger alert-dismissible fade show' role='alert'>Why don't we slow down a bit :~)</div>");
+                    $(`#${challenge_id}`).parent().append(alert);
+                    setTimeout(function () {
+                        alert.alert('close');
+                    }, 5000);
+                } else {
+                    $("#" + challenge_id).css("background-color", "red");
+                }
+            },
+            failure: function () {
+                alert("failure")
+                $("#" + challenge_id).css("background-color", "red");
+            }
+        });
+    }
+  </script>
+{% endblock %}
+
+{% block main %}
+  <div class="col">
+    <div class="row">
+      {% for team in teams %}
+        <div class="p-2" style="width:20em">
+        <div class='card' style="width:18em">
+          <div class="card-body">
+            <h4 class="card-title">{{ team.name }} {% if team == user_team %}<i class="fa-solid fa-star"></i>{% endif %}</h4>
+            <p class="card-text">Points: {{ team.points }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col">
+    <div class='row'>
+      {% for problem, is_solved in problems %}
+        <div class='col-lg-3 col-md-4 col-sm-6 col-xs-12'>
+            <div id="box"
+                class="box {% if not is_solved %}available{% else %}locked{% endif %} p-3">
+                <div class="centered-div">
+                    <h4>{{ problem.title }}</h4>
+                    <p>Points: {{ problem.points }}</p>
+                </div>
+                <div class="{% if is_solved %}center{% else %}left{% endif %}-div">
+                    {% if is_solved %}
+                    <h3>Solved!</h3>
+                    {% else %}
+                    <p>{{ problem.question }}</p>
+                    {% endif %}
+                </div>
+                {% if not is_solved %}
+                  <hr>
+                  <input type="text" id="{{ problem.id }}" placeholder="Enter the flag here">
+                  <input type="submit" id="{{ problem.id }}-submit" value="Submit" onclick="checkFlag({{ problem.id }})">
+                {% endif %}
+            </div>
+        </div>
+      {% endfor %}
+  </div>
+{% endblock %}
